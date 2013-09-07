@@ -22,6 +22,7 @@ on test => sub {
     requires 'Test::TCP'  => 1.06;
     requires 'Test::Requires';
     requires 'File::Temp';
+    requires 'Capture::Tiny';
     suggests 'Test::Fake::HTTPD';
     suggests 'HTTP::Proxy';
     suggests 'HTTP::Server::PSGI';

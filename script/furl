@@ -1,0 +1,27 @@
+#!/usr/bin/env perl
+use strict;
+use 5.008001;
+use Furl::CLI;
+
+exit Furl::CLI->new->run(@ARGV);
+
+__END__
+
+=head1 NAME
+
+furl - command line HTTP client written in Perl.
+
+=head1 SYNOPSYS
+
+  > furl http://example.com/
+  > furl [flags] [METHOD] URL [ITEM [ITEM]]
+
+=head1 DESCRIPTION
+
+For more documentation, refer to L<Furl::CLI> by running C<perldoc Furl::CLI> or C<furl --help>.
+
+=head1 SEE ALSO
+
+L<Furl>, L<Furl::CLI>
+
+=cut
