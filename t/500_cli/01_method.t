@@ -6,11 +6,10 @@ use Capture::Tiny ':all';
 use Furl::CLI;
 
 my $output = capture_stdout {
-    Furl::CLI->new->run(q{https://github.com/tokuhirom/Furl});
+    Furl::CLI->new->run(qw{PUT http://httpbin.org/put});
 };
 
 like $output, qr{HTTP/1\.1 200 OK};
-like $output, qr{Furl};
 
 done_testing;
 

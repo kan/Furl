@@ -23,9 +23,18 @@ sub run {
         'h|headers' => \my $headers,
     );
 
-    my $url = shift @ARGV;
+    my $method = shift @ARGV;
+    my $url;
 
-    my $res = $self->{furl}->get($url);
+    if ($method =~ /^(GET|POST|PUT|DELETE|HEAD)$/) {
+        $url = shift @ARGV;
+    } else {
+        $url = $method;
+        $method = 'GET';
+    }
+
+    my $res = $self->{furl}->request(url => $url, method => $method);
+
     printf "%s %d %s\n", $res->protocol, $res->code, $res->message;
     print $res->headers->as_string . "\n";
     print $res->content;
