@@ -12,6 +12,7 @@ requires 'Time::HiRes';
 suggests 'HTTP::Headers'; # Furl::Headers
 suggests 'HTTP::Request'; # Furl::Request
 suggests 'HTTP::Response'; # Furl::Response
+suggests 'JSON'; # Furl::CLI
 
 recommends 'Net::IDN::Encode';    # for International Domain Name
 recommends 'IO::Socket::SSL';     # for SSL
