@@ -34,6 +34,8 @@ sub run {
         $method = 'GET';
     }
 
+    $url = 'http://' . $url if $url !~ qr{^https?://};
+
     my %query;
     my %content;
     my %header;
