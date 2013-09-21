@@ -23,6 +23,10 @@ sub run {
     Getopt::Long::Configure("bundling");
     Getopt::Long::GetOptions(
         'f|form' => \my $form,
+        'h|headers' => \my $show_headers,
+        'b|body' => \my $show_body,
+        'v|verbose' => \my $show_verbose,
+        'p|print=s' => \my $print_mode,
     );
 
     my $method = shift @ARGV;
@@ -94,10 +98,14 @@ sub run {
     my $req = Furl::Request->new($method, $url, \%header, $content);
     my $res = $self->{furl}->request($req);
 
-    printf "%s %d %s\n", $res->protocol, $res->code, $res->message;
-    print $res->headers->as_string . "\n";
-    print $res->content;
-    print "\n\n";
+    if (!$show_body) {
+        printf "%s %d %s\n", $res->protocol, $res->code, $res->message;
+        print $res->headers->as_string . "\n";
+    }
+    if (!$show_headers) {
+        print $res->content;
+        print "\n\n";
+    }
 
     return 0;
 }
