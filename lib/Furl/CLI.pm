@@ -5,6 +5,7 @@ use 5.008001;
 
 use URI;
 use Getopt::Long ();
+use HTTP::Request::Common;
 
 use Furl;
 
@@ -38,7 +39,8 @@ sub run {
 
     my %query;
     my %content;
-    my %header;
+    my %header = (accept => ['*/*'], 'accept-encoding' => ['gzip, deflate, compress']);
+    my $upload;
 
     for my $arg (@ARGV) {
         if ($arg =~ /^(.+?[^\\]):=(.+?)$/) {
@@ -55,7 +57,11 @@ sub run {
             $content{$key} = $val;
         }
         elsif ($arg =~ /^(.+?):(.+?)$/) {
-            $header{$1} = $2;
+            $header{lc $1} = [ $2 ];
+        }
+        elsif ($arg =~ /^(.+?)@(.+?)$/) {
+            $content{$1} = [ $2 ];
+            $upload = 1;
         }
         else {
             die "invalid arg: $arg";
@@ -64,10 +70,15 @@ sub run {
 
     my $content;
     if (%content) {
-        if ($form) {
+        if ($upload) {
+            my $r = POST $url, Content_Type => 'form-data', Content => [ %content ];
+            $content = $r->content;
+            $header{'content-type'} = [ join(';', $r->content_type) ];
+        } elsif ($form) {
             my $uri = URI->new;
             $uri->query_form(\%content);
             $content = $uri->query;
+            $header{'content-type'} = [ 'application/x-www-form-urlencoded; charset=utf-8' ];
         } else {
             require JSON;
             $content = JSON->new->encode(\%content);
